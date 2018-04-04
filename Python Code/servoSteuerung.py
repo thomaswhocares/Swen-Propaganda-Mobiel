@@ -66,8 +66,6 @@ def move_backwards_right(t):
 
 try:
         while True:
-                
-                
                 move_forward_left(0.5)
                 
                 
