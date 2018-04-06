@@ -3,7 +3,7 @@ import sys
 
 
 HOST = '127.0.0.1'
-PORT = 10002
+PORT = 10000
 s = socket.socket()
 s.connect((HOST, PORT))
 

@@ -15,7 +15,7 @@ def handle(clientsocket):
 # kp
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-PORT = 10002
+PORT = 10000
 HOST = '127.0.0.1'
 
 serversocket.bind((HOST, PORT))
