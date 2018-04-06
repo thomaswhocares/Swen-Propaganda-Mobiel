@@ -2,6 +2,9 @@
 #/usr/bin/python3
 import RPi.GPIO as GPIO
 import time
+# Orange PWM
+# Rot    +
+# Braun  -
 
 
 # t = time for sleep
