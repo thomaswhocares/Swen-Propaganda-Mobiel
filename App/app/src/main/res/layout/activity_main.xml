@@ -7,52 +7,126 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewLocalIP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:text="Kp wie das hier geht"
+        android:layout_marginTop="16dp"
+        android:text="Local IP"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/buttonMitte"
+
+    <TextView
+        android:id="@+id/textEditLocalIP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:layout_marginTop="8dp"
+        android:text="LocalIP"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLocalIP" />
+
+    <TextView
+        android:id="@+id/textViewServerIP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:text="Server IP"
+        app:layout_constraintBottom_toTopOf="@+id/textEditServerIP"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewServerPort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Server Port"
+        app:layout_constraintBottom_toTopOf="@+id/textEditServerPort"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textViewServerIP"
+        app:layout_constraintVertical_bias="0.666" />
+
+
+    <EditText
+        android:id="@+id/textEditServerIP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
+        android:digits="0123456789."
+        android:ems="7"
+        android:inputType="number"
+        android:maxLength="15"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textEditLocalIP" />
+
+    <EditText
+        android:id="@+id/textEditServerPort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:digits="0123456789"
+        android:ems="3"
+        android:inputType="number"
+        android:maxLength="5"
+        android:text="10000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textEditLocalIP" />/>
+    <Button
+        android:id="@+id/buttonServerConnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Verbinden"
+        app:layout_constraintEnd_toEndOf="@+id/textEditServerIP"
+        app:layout_constraintStart_toStartOf="@+id/textEditServerIP"
+        app:layout_constraintTop_toBottomOf="@+id/textEditServerIP" />
+
+    <Button
+        android:id="@+id/buttonControllReverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="Reverse"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.786" />
 
     <Button
-        android:id="@+id/buttonRechts"
+        android:id="@+id/buttonControllRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="Button"
-        app:layout_constraintStart_toEndOf="@+id/buttonMitte"
-        app:layout_constraintTop_toTopOf="@+id/buttonMitte" />
+        android:enabled="false"
+        android:text="Rechts"
+        app:layout_constraintStart_toEndOf="@+id/buttonControllReverse"
+        app:layout_constraintTop_toTopOf="@+id/buttonControllReverse" />
 
     <Button
-        android:id="@+id/buttonLinks"
+        android:id="@+id/buttonControllLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:text="Button"
-        app:layout_constraintEnd_toStartOf="@+id/buttonMitte"
-        app:layout_constraintTop_toTopOf="@+id/buttonMitte" />
+        android:enabled="false"
+        android:text="Links"
+        app:layout_constraintEnd_toStartOf="@+id/buttonControllReverse"
+        app:layout_constraintTop_toTopOf="@+id/buttonControllReverse" />
 
     <TextView
-        android:id="@+id/localIP"
+        android:id="@+id/textViewConnectionStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="LocalIP"
-        app:layout_constraintBottom_toTopOf="@+id/buttonMitte"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="8dp"
+        android:text="Nicht Verbunden"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonServerConnect"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-
+        app:layout_constraintTop_toTopOf="@+id/buttonServerConnect"
+        app:layout_constraintVertical_bias="0.384" />
 </android.support.constraint.ConstraintLayout>

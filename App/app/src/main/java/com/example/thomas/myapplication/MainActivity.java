@@ -5,37 +5,56 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.net.wifi.WifiManager;
 import android.content.Context;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.net.Socket;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Socket socket;
-
-    private static final int port = 10000;
-    static  String Server_ip = "0";
-
-
-
-     public String localIpAdress(){
-
-         WifiManager wifiMan = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-         WifiInfo wifiInf = wifiMan.getConnectionInfo();
-         int ipAddress = wifiInf.getIpAddress();
-         String ip = String.format("%d.%d.%d.%d", (ipAddress & 0xff),(ipAddress >> 8 & 0xff),(ipAddress >> 16 & 0xff),(ipAddress >> 24 & 0xff));
-         return ip;
-     }
+    TextView connectionStatus,localeIP;
+    EditText editTextIpAddress, editTextPort;
+    Button buttonConnect, buttonClear;
+    Client client;
+    private String serverIP;
+    private int serverPort;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView textView = (TextView) findViewById(R.id.localIP);
-        textView.setText(localIpAdress());
+        localeIP = (TextView) findViewById(R.id.textEditLocalIP);
+        localeIP.setText(localIpAddress());
 
+        editTextIpAddress = (EditText) findViewById(R.id.textEditServerIP);
+        editTextPort = (EditText) findViewById(R.id.textEditServerPort);
+        buttonConnect = (Button) findViewById(R.id.buttonServerConnect);
+        connectionStatus = (TextView) findViewById(R.id.textViewConnectionStatus);
+
+
+        buttonConnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                serverIP = editTextIpAddress.getText().toString();
+                serverPort = Integer.parseInt(editTextPort.getText().toString());
+                Toast.makeText(getApplicationContext(), serverIP+" " +serverPort,
+                        Toast.LENGTH_SHORT).show();
+                //client = new Client();
+            }
+        });
+    }
+
+
+
+
+    public String localIpAddress() {
+        WifiManager wifiMan = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInf = wifiMan.getConnectionInfo();
+        int ipAddress = wifiInf.getIpAddress();
+        String local_ip = String.format("%d.%d.%d.%d", (ipAddress & 0xff), (ipAddress >> 8 & 0xff), (ipAddress >> 16 & 0xff), (ipAddress >> 24 & 0xff));
+        return local_ip;
     }
 }
-
