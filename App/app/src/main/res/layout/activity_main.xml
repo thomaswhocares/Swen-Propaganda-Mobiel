@@ -86,7 +86,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textEditServerIP" />
 
     <Button
-        android:id="@+id/buttonControllReverse"
+        android:id="@+id/buttonControlReverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:enabled="false"
@@ -98,24 +98,24 @@
         app:layout_constraintVertical_bias="0.786" />
 
     <Button
-        android:id="@+id/buttonControllRight"
+        android:id="@+id/buttonControlRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:enabled="false"
         android:text="Rechts"
-        app:layout_constraintStart_toEndOf="@+id/buttonControllReverse"
-        app:layout_constraintTop_toTopOf="@+id/buttonControllReverse" />
+        app:layout_constraintStart_toEndOf="@+id/buttonControlReverse"
+        app:layout_constraintTop_toTopOf="@+id/buttonControlReverse" />
 
     <Button
-        android:id="@+id/buttonControllLeft"
+        android:id="@+id/buttonControlLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:enabled="false"
         android:text="Links"
-        app:layout_constraintEnd_toStartOf="@+id/buttonControllReverse"
-        app:layout_constraintTop_toTopOf="@+id/buttonControllReverse" />
+        app:layout_constraintEnd_toStartOf="@+id/buttonControlReverse"
+        app:layout_constraintTop_toTopOf="@+id/buttonControlReverse" />
 
     <TextView
         android:id="@+id/textViewConnectionStatus"

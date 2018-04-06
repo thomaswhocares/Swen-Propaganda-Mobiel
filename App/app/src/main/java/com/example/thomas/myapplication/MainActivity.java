@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView connectionStatus,localeIP;
     EditText editTextIpAddress, editTextPort;
-    Button buttonConnect, buttonClear;
+    Button buttonConnect, buttonControlLeft, buttonControlReverse, buttonControlRight;
     Client client;
     private String serverIP;
     private int serverPort;
@@ -35,16 +35,23 @@ public class MainActivity extends AppCompatActivity {
         connectionStatus = (TextView) findViewById(R.id.textViewConnectionStatus);
 
 
+
         buttonConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 serverIP = editTextIpAddress.getText().toString();
                 serverPort = Integer.parseInt(editTextPort.getText().toString());
+                //Test ob das Lesen klappt
                 Toast.makeText(getApplicationContext(), serverIP+" " +serverPort,
                         Toast.LENGTH_SHORT).show();
-                //client = new Client();
+
+                client = new Client(serverIP,serverPort);
             }
-        });
+        }
+
+
+
+        );
     }
 
 
