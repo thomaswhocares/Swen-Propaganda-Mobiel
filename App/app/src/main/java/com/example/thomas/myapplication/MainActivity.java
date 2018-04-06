@@ -33,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
         editTextPort = (EditText) findViewById(R.id.textEditServerPort);
         buttonConnect = (Button) findViewById(R.id.buttonServerConnect);
         connectionStatus = (TextView) findViewById(R.id.textViewConnectionStatus);
+        buttonControlLeft = (Button) findViewById(R.id.buttonControlLeft);
+        buttonControlReverse = (Button) findViewById(R.id.buttonControlReverse);
+        buttonControlRight = (Button) findViewById(R.id.buttonControlRight);
 
 
 
@@ -45,13 +48,14 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), serverIP+" " +serverPort,
                         Toast.LENGTH_SHORT).show();
 
-                client = new Client(serverIP,serverPort);
+                client = new Client();
+                client.connectTo(serverIP,serverPort);
             }
-        }
+        });
 
 
 
-        );
+
     }
 
 

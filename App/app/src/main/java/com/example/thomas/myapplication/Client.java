@@ -8,9 +8,15 @@ public class Client {
     private int serverPort;
 
 
-    public Client(String serverIP,int serverPort){
-
+    public Client(){
 
     }
+
+    public void connectTo(String serverIP,int serverPort){
+        this.serverIP = serverIP;
+        this.serverPort = serverPort;
+    }
+
+
 
 }
