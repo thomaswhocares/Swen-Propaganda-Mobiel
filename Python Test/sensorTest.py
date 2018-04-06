@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 #/usr/bin/python3
+
+# ROT       +
+# SCHWARZ   -
+# GELB      Data hig/low
+
 import RPi.GPIO as GPIO
 import time
 
