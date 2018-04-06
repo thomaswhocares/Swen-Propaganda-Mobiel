@@ -1,6 +1,7 @@
 import socket
 from threading import Thread
-
+# Beispiel Pyhon Socket
+# Wartet auf eine verbindung und gibt aus was empfangen wurde.
 
 MAX_LENGTH = 4096
 
@@ -11,7 +12,7 @@ def handle(clientsocket):
         print("client disconnected")
         return #client terminated connection
     print (buf)
-
+# kp
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 PORT = 10002
