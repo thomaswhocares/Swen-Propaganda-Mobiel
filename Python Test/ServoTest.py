@@ -59,20 +59,18 @@ def move_backwards_right(t):
 
 
 try:
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(21,GPIO.OUT)
+        GPIO.setup(19,GPIO.OUT)
+
+        p1=GPIO.PWM(21 ,50) #rechts
+        p1.start(100)
+
+        p2=GPIO.PWM(19 ,50) #links
+        p2.start(100)
+        
         while True:
-                
-                GPIO.setmode(GPIO.BCM)
-                GPIO.setup(21,GPIO.OUT)
-                GPIO.setup(19,GPIO.OUT)
-
-                p1=GPIO.PWM(21 ,50) #rechts
-                p1.start(100)
-
-                p2=GPIO.PWM(19 ,50) #links
-                p2.start(100)
-                
                 move_forward_left(0.5)
-                
                 
 except KeyboardInterrupt:
         GPIO.cleanup()
