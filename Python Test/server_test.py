@@ -6,12 +6,15 @@ from threading import Thread
 MAX_LENGTH = 4096
 
 def handle(clientsocket):
-  while 1:
-    buf = clientsocket.recv(MAX_LENGTH)
-    if len(buf)<1:
-        print("client disconnected")
-        return #client terminated connection
-    print (buf)
+    print("Client verbunden.")
+    while 1:
+        buf = clientsocket.recv(MAX_LENGTH)
+        if len(buf)<1:
+            print("Client getrennt.")
+            serversocket.detach
+            return #client terminated connection
+        print (buf)
+
 # kp
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -20,10 +23,21 @@ HOST = '127.0.0.1'
 
 serversocket.bind((HOST, PORT))
 serversocket.listen(10)
+x = True
+while x:
+    try:
+        print("Server gestartet.")
+        #accept connections from outside
+        (clientsocket, address) = serversocket.accept()
+        #                   funktion für Thread  übergabewerte für die Funktion
+        socketThread = Thread(target=handle, args=(clientsocket,))
+        socketThread.run()
 
-while 1:
-    #accept connections from outside
-    (clientsocket, address) = serversocket.accept()
-    #                   funktion für Thread  übergabewerte für die Funktion
-    socketThread = Thread(target=handle, args=(clientsocket,))
-    socketThread.run()
+    except KeyboardInterrupt:
+        print("\nShutdown wegen KeyboardInterrupt")
+        
+        x = False
+
+    finally:
+        serversocket.detach
+    
