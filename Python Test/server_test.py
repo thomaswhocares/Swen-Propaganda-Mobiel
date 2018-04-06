@@ -19,7 +19,9 @@ def handle(clientsocket):
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 PORT = 10000
-HOST = '127.0.0.1'
+# gibt die locale ip zurück copy pasta von stack overflow
+localIP=[(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
+HOST = localIP
 
 serversocket.bind((HOST, PORT))
 serversocket.listen(10)
