@@ -5,7 +5,8 @@ import time
 # Orange PWM
 # Rot    +
 # Braun  -
-
+# pin 21 PWM Rechts
+# pin 19 PWM Links
 
 # t = time for sleep
 def move_forwards(t):
@@ -60,8 +61,8 @@ def move_backwards_right(t):
 
 try:
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(21,GPIO.OUT)
-        GPIO.setup(19,GPIO.OUT)
+        GPIO.setup(21,GPIO.OUT)#rechts
+        GPIO.setup(19,GPIO.OUT)#links
 
         p1=GPIO.PWM(21 ,50) #rechts
         p1.start(100)
