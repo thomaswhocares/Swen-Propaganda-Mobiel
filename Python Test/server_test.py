@@ -21,7 +21,6 @@ def handle(clientsocket):
 # kp
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-
 serversocket.bind((HOST, PORT))
 serversocket.listen(10)
 x = True

@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         buttonControlReverse = (Button) findViewById(R.id.buttonControlReverse);
         buttonControlRight = (Button) findViewById(R.id.buttonControlRight);
 
+        editTextIpAddress.setText("192.168.2.171");
+
 
 
         buttonConnect.setOnClickListener(new View.OnClickListener() {
@@ -48,8 +50,9 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), serverIP+" " +serverPort,
                         Toast.LENGTH_SHORT).show();
 
-                client = new Client();
+                client = new Client(getApplicationContext());
                 client.connectTo(serverIP,serverPort);
+
             }
         });
 
