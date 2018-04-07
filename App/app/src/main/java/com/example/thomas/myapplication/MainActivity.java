@@ -1,6 +1,7 @@
 package com.example.thomas.myapplication;
 
 import android.net.wifi.WifiInfo;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.net.wifi.WifiManager;
@@ -14,12 +15,14 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView textViewConnectionStatus,localeIP;
-    EditText editTextIpAddress, editTextPort;
-    Button buttonConnect, buttonControlLeft, buttonControlReverse, buttonControlRight;
-    Client client;
+    private TextView textViewConnectionStatus;
+    private TextView localeIP;
+    private EditText editTextIpAddress, editTextPort;
+    protected Button buttonConnect, buttonControlLeft, buttonControlReverse, buttonControlRight;
+    private Client client;
     private String serverIP;
     private int serverPort;
+    private Handler handeler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,30 +42,25 @@ public class MainActivity extends AppCompatActivity {
 
         editTextIpAddress.setText("192.168.2.171");
 
-
+        //Müsste sich mit dem Looper des UI threads verbinden.
+        handeler = new Handler();
 
         buttonConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Boolean connectionSucces = false;
+                //Verhindert erneutes drücken des "Verbinden" buttons.
+
+                buttonConnect.setEnabled(false);
                 serverIP = editTextIpAddress.getText().toString();
                 serverPort = Integer.parseInt(editTextPort.getText().toString());
+
                 //Test ob das Lesen klappt
-                Toast.makeText(getApplicationContext(), serverIP+" " +serverPort,
+                Toast.makeText(getApplicationContext(), "Verbinde mit "+ serverIP+" " +serverPort,
                         Toast.LENGTH_SHORT).show();
 
-                client = new Client();
-                connectionSucces=client.connectTo(serverIP,serverPort);
-
-                if (connectionSucces){
-                    buttonControlLeft.setEnabled(true);
-                    buttonControlReverse.setEnabled(true);
-                    buttonControlRight.setEnabled(true);
-                    buttonConnect.setEnabled(false);
-                    textViewConnectionStatus.setText("Verbunden");
-                }
-
-
+                //Instanzieren der Client Klasse
+                client = new Client(handeler,buttonConnect);
+                client.connectTo(serverIP,serverPort);
 
             }
         });
@@ -74,14 +72,11 @@ public class MainActivity extends AppCompatActivity {
                 client.send(msg);
             }
         });
-
-
-
-
     }
 
-
-
+    public Handler getHandeler() {
+        return handeler;
+    }
 
     public String localIpAddress() {
         WifiManager wifiMan = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
@@ -90,4 +85,5 @@ public class MainActivity extends AppCompatActivity {
         String local_ip = String.format("%d.%d.%d.%d", (ipAddress & 0xff), (ipAddress >> 8 & 0xff), (ipAddress >> 16 & 0xff), (ipAddress >> 24 & 0xff));
         return local_ip;
     }
+
 }
