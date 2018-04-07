@@ -75,6 +75,7 @@
         android:text="10000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textEditLocalIP" />/>
+
     <Button
         android:id="@+id/buttonServerConnect"
         android:layout_width="wrap_content"
@@ -84,6 +85,33 @@
         app:layout_constraintEnd_toEndOf="@+id/textEditServerIP"
         app:layout_constraintStart_toStartOf="@+id/textEditServerIP"
         app:layout_constraintTop_toBottomOf="@+id/textEditServerIP" />
+
+    <Button
+        android:id="@+id/buttonServerDisconnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Verbindung
+Trennen"
+        android:enabled="false"
+        app:layout_constraintEnd_toEndOf="@+id/buttonServerConnect"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/buttonServerConnect"
+        app:layout_constraintTop_toBottomOf="@+id/buttonServerConnect" />
+
+    <TextView
+        android:id="@+id/textViewConnectionStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="8dp"
+        android:text="Nicht Verbunden"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonServerConnect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/buttonServerConnect"
+        app:layout_constraintVertical_bias="0.384" />
 
     <Button
         android:id="@+id/buttonControlReverse"
@@ -117,16 +145,5 @@
         app:layout_constraintEnd_toStartOf="@+id/buttonControlReverse"
         app:layout_constraintTop_toTopOf="@+id/buttonControlReverse" />
 
-    <TextView
-        android:id="@+id/textViewConnectionStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="8dp"
-        android:text="Nicht Verbunden"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonServerConnect"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/buttonServerConnect"
-        app:layout_constraintVertical_bias="0.384" />
+
 </android.support.constraint.ConstraintLayout>

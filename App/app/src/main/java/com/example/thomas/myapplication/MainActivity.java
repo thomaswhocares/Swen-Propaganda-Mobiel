@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewConnectionStatus;
     private TextView localeIP;
     private EditText editTextIpAddress, editTextPort;
-    protected Button buttonConnect, buttonControlLeft, buttonControlReverse, buttonControlRight;
+    protected Button buttonConnect,buttonDisconnect, buttonControlLeft, buttonControlReverse, buttonControlRight;
     private Client client;
     private String serverIP;
     private int serverPort;
@@ -32,38 +32,43 @@ public class MainActivity extends AppCompatActivity {
         localeIP = (TextView) findViewById(R.id.textEditLocalIP);
         localeIP.setText(localIpAddress());
 
-        editTextIpAddress = (EditText) findViewById(R.id.textEditServerIP);
-        editTextPort = (EditText) findViewById(R.id.textEditServerPort);
-        buttonConnect = (Button) findViewById(R.id.buttonServerConnect);
-        textViewConnectionStatus = (TextView) findViewById(R.id.textViewConnectionStatus);
-        buttonControlLeft = (Button) findViewById(R.id.buttonControlLeft);
-        buttonControlReverse = (Button) findViewById(R.id.buttonControlReverse);
-        buttonControlRight = (Button) findViewById(R.id.buttonControlRight);
+        editTextIpAddress = findViewById(R.id.textEditServerIP);
+        editTextPort = findViewById(R.id.textEditServerPort);
+        buttonConnect =  findViewById(R.id.buttonServerConnect);
+        buttonDisconnect = findViewById(R.id.buttonServerDisconnect);
+        textViewConnectionStatus = findViewById(R.id.textViewConnectionStatus);
+        buttonControlLeft = findViewById(R.id.buttonControlLeft);
+        buttonControlReverse = findViewById(R.id.buttonControlReverse);
+        buttonControlRight = findViewById(R.id.buttonControlRight);
 
         editTextIpAddress.setText("192.168.2.171");
 
         //Müsste sich mit dem Looper des UI threads verbinden.
         handeler = new Handler();
-
+        //
         buttonConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 //Verhindert erneutes drücken des "Verbinden" buttons.
 
                 buttonConnect.setEnabled(false);
                 serverIP = editTextIpAddress.getText().toString();
                 serverPort = Integer.parseInt(editTextPort.getText().toString());
 
-                //Test ob das Lesen klappt
-                Toast.makeText(getApplicationContext(), "Verbinde mit "+ serverIP+" " +serverPort,
-                        Toast.LENGTH_SHORT).show();
-
                 //Instanzieren der Client Klasse
-                client = new Client(handeler,buttonConnect,buttonControlReverse,buttonControlLeft,buttonControlRight,textViewConnectionStatus);
+                client = new Client(getApplicationContext(),handeler,buttonConnect,buttonDisconnect,buttonControlReverse,buttonControlLeft,buttonControlRight,textViewConnectionStatus);
                 client.connectTo(serverIP,serverPort);
 
             }
         });
+        buttonDisconnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                client.disconnect();
+            }
+        });
+
         buttonControlReverse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
