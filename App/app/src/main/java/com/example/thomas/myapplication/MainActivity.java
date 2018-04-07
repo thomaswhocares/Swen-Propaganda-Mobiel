@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView connectionStatus,localeIP;
+    TextView textViewConnectionStatus,localeIP;
     EditText editTextIpAddress, editTextPort;
     Button buttonConnect, buttonControlLeft, buttonControlReverse, buttonControlRight;
     Client client;
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         editTextIpAddress = (EditText) findViewById(R.id.textEditServerIP);
         editTextPort = (EditText) findViewById(R.id.textEditServerPort);
         buttonConnect = (Button) findViewById(R.id.buttonServerConnect);
-        connectionStatus = (TextView) findViewById(R.id.textViewConnectionStatus);
+        textViewConnectionStatus = (TextView) findViewById(R.id.textViewConnectionStatus);
         buttonControlLeft = (Button) findViewById(R.id.buttonControlLeft);
         buttonControlReverse = (Button) findViewById(R.id.buttonControlReverse);
         buttonControlRight = (Button) findViewById(R.id.buttonControlRight);
@@ -44,15 +44,34 @@ public class MainActivity extends AppCompatActivity {
         buttonConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Boolean connectionSucces = false;
                 serverIP = editTextIpAddress.getText().toString();
                 serverPort = Integer.parseInt(editTextPort.getText().toString());
                 //Test ob das Lesen klappt
                 Toast.makeText(getApplicationContext(), serverIP+" " +serverPort,
                         Toast.LENGTH_SHORT).show();
 
-                client = new Client(getApplicationContext());
-                client.connectTo(serverIP,serverPort);
+                client = new Client();
+                connectionSucces=client.connectTo(serverIP,serverPort);
 
+                if (connectionSucces){
+                    buttonControlLeft.setEnabled(true);
+                    buttonControlReverse.setEnabled(true);
+                    buttonControlRight.setEnabled(true);
+                    buttonConnect.setEnabled(false);
+                    textViewConnectionStatus.setText("Verbunden");
+                }
+
+
+
+            }
+        });
+        buttonControlReverse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                byte[] msg = new byte[1] ;
+                msg[0] = 1;
+                client.send(msg);
             }
         });
 

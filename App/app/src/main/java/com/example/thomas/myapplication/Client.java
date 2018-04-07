@@ -1,42 +1,41 @@
 package com.example.thomas.myapplication;
 
-import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
-
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.concurrent.Executors;
+import java.nio.ByteBuffer;
+
 
 import static android.content.ContentValues.TAG;
 
 public class Client {
-    Context context;
+
     private Socket connectionSocket;
     private String stringServerIP;
     private InetAddress serverIP;
     private int serverPort;
     private long startTime;
 
-
-    public Client(Context context){
-        this.context = context;
+    public Client(){
     }
 
     public boolean connectTo(String stringServerIP,int serverPort){
         this.stringServerIP = stringServerIP;
         this.serverPort = serverPort;
         new Thread(new ConnectRunnable()).start();
-        Toast.makeText(context, "KEKEKE",
-                Toast.LENGTH_LONG).show();
-
         return true;
     }
 
+    public boolean send(byte[] dataToSend){
+            new Thread(new SendRunnable(connectionSocket, dataToSend)).start();
+        return false;
+    }
 
     class ConnectRunnable implements Runnable{
+        @Override
         public void run(){
             try {
                 Log.d(TAG, "C: Connecting...");
@@ -55,6 +54,48 @@ public class Client {
                 e.printStackTrace();
             }
             Log.d(TAG, "Connetion thread stopped");
+        }
+    }
+    class SendRunnable implements Runnable{
+
+        private OutputStream streamOut;
+        private byte[] dataToSend;
+        private boolean hasdata;
+
+        public SendRunnable(Socket server,byte[] dataToSend){
+            this.dataToSend = dataToSend;
+            this.hasdata = true;
+            try{
+                this.streamOut = server.getOutputStream();
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public boolean isConnected(){
+            return connectionSocket != null &&
+                    connectionSocket.isConnected() &&
+                    !connectionSocket.isClosed();
+        }
+
+        @Override
+        public void run(){
+            while(!Thread.currentThread().isInterrupted() && isConnected()){
+
+                if (this.hasdata) {
+                    try{
+                        this.streamOut.write(ByteBuffer.allocate(4).putInt(dataToSend.length).array());
+                        this.streamOut.write(dataToSend,0, dataToSend.length);
+                        this.streamOut.flush();
+
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                    this.hasdata = false;
+                    this.dataToSend = null;
+
+                }
+            }
         }
     }
 }
