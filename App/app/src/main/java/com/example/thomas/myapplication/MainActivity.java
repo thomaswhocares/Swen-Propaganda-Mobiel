@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
 
                 //Instanzieren der Client Klasse
-                client = new Client(handeler,buttonConnect);
+                client = new Client(handeler,buttonConnect,buttonControlReverse,buttonControlLeft,buttonControlRight,textViewConnectionStatus);
                 client.connectTo(serverIP,serverPort);
 
             }
@@ -74,14 +74,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public Handler getHandeler() {
-        return handeler;
-    }
 
     public String localIpAddress() {
         WifiManager wifiMan = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInf = wifiMan.getConnectionInfo();
         int ipAddress = wifiInf.getIpAddress();
+        //copy pasta von stack overflow
         String local_ip = String.format("%d.%d.%d.%d", (ipAddress & 0xff), (ipAddress >> 8 & 0xff), (ipAddress >> 16 & 0xff), (ipAddress >> 24 & 0xff));
         return local_ip;
     }

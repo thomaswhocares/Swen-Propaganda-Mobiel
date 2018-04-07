@@ -1,7 +1,6 @@
 package com.example.thomas.myapplication;
 
 import android.util.Log;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetAddress;
@@ -10,6 +9,7 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import android.os.Handler;
 import android.widget.Button;
+import android.widget.TextView;
 
 
 import static android.content.ContentValues.TAG;
@@ -21,11 +21,16 @@ public class Client {
     private int serverPort, timeout =3000;
     private Thread sendThread;
     private Handler handlerMainUIThread;
-    private Button buttonConnect;
+    private Button buttonConnect,buttonReverse,buttonLeft,buttonRight;
+    private TextView textViewConnectionStatus;
 
-    public Client(Handler handlerMainUIThread, Button buttonConnect){
+    public Client(Handler handlerMainUIThread, Button buttonConnect, Button buttonReverse, Button buttonLeft, Button buttonRight,TextView textViewConnectionStatus){
         this.handlerMainUIThread = handlerMainUIThread;
         this.buttonConnect = buttonConnect;
+        this.buttonReverse = buttonReverse;
+        this.buttonLeft = buttonLeft;
+        this.buttonRight = buttonRight;
+        this.textViewConnectionStatus = textViewConnectionStatus;
     }
 
     public void connectTo(String stringServerIP, int serverPort) {
@@ -33,8 +38,6 @@ public class Client {
         this.serverPort = serverPort;
         Thread connectionThread = new Thread(new ConnectRunnable());
         connectionThread.start();
-
-
     }
 
     public boolean send(byte[] dataToSend){
@@ -46,6 +49,7 @@ public class Client {
 
     class ConnectRunnable implements Runnable{
         ConnectRunnable(){
+            //Hier könnte ihre Werbung stehen
         }
         @Override
         public void run(){
@@ -61,6 +65,18 @@ public class Client {
                 connectionSocket.connect(new InetSocketAddress(serverAddr, serverPort), timeout);
 
                 Log.d(TAG, "Connected!");
+                Log.d(TAG, "Release THE KRAKEN");
+                //Change UI to Show that commands may be send now.
+                handlerMainUIThread.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        textViewConnectionStatus.setText("Verbunden");
+                        buttonReverse.setEnabled(true);
+                        buttonLeft.setEnabled(true);
+                        buttonRight.setEnabled(true);
+                    }
+                });
+
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -90,8 +106,6 @@ public class Client {
                 this.streamOut = server.getOutputStream();
             }catch (IOException e) {
                 e.printStackTrace();
-
-
             }
         }
 
@@ -103,7 +117,7 @@ public class Client {
 
         @Override
         public void run(){
-
+            //TODO DAS FUNST 100 % SO NICHT !!!!!!!
             if (!Thread.currentThread().isInterrupted() && isConnected() && this.hasdata) {
                 try{
                     this.streamOut.write(ByteBuffer.allocate(4).putInt(dataToSend.length).array());
