@@ -1,14 +1,18 @@
 package com.example.thomas.myapplication;
 
 import android.content.Context;
-import android.os.Looper;
 import android.util.Log;
+
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.StreamCorruptedException;
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.nio.ByteBuffer;
+import java.net.UnknownHostException;
+
 import android.os.Handler;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,14 +25,19 @@ public class Client {
 
     private Socket connectionSocket;
     private String stringServerIP;
-    private int serverPort, timeout =3000;
-    private Thread sendThread;
+    private int serverPort, timeout = 3000;
     private Handler handlerMainUIThread;
-    private Button buttonConnect,buttonDisconnect,buttonReverse,buttonLeft,buttonRight;
+    private Button buttonConnect, buttonDisconnect, buttonReverse, buttonLeft, buttonRight;
     private TextView textViewConnectionStatus;
     private Context mainContext;
 
-    public Client(Context mainContext, Handler handlerMainUIThread, Button buttonConnect,Button buttonDisconnect, Button buttonReverse, Button buttonLeft, Button buttonRight, TextView textViewConnectionStatus){
+    private ConnectRunnable connectRunnable;
+    private Thread connectionThread;
+    private SendRunnable sendRunnable;
+    private Thread sendThread;
+
+
+    public Client(Context mainContext, Handler handlerMainUIThread, Button buttonConnect, Button buttonDisconnect, Button buttonReverse, Button buttonLeft, Button buttonRight, TextView textViewConnectionStatus) {
         this.mainContext = mainContext;
         this.handlerMainUIThread = handlerMainUIThread;
         this.buttonConnect = buttonConnect;
@@ -42,17 +51,19 @@ public class Client {
     public void connectTo(String stringServerIP, int serverPort) {
         this.stringServerIP = stringServerIP;
         this.serverPort = serverPort;
-        Thread connectionThread = new Thread(new ConnectRunnable());
+
+        connectRunnable = new ConnectRunnable();
+        connectionThread = new Thread(connectRunnable);
         connectionThread.start();
     }
 
-    public void disconnect(){
-        try{
+    public void disconnect() {
+        try {
             connectionSocket.close();
             handlerMainUIThread.post(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(mainContext,"Trenne Verbindung "+stringServerIP,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mainContext, "Trenne Verbindung " + stringServerIP, Toast.LENGTH_SHORT).show();
                     buttonConnect.setEnabled(true);
                     buttonDisconnect.setEnabled(false);
                     buttonReverse.setEnabled(false);
@@ -60,25 +71,34 @@ public class Client {
                     buttonRight.setEnabled(false);
                 }
             });
-        }catch (IOException e){
+        } catch (IOException e) {
 
         }
 
     }
 
-    public boolean send(byte[] dataToSend){
-        sendThread = new Thread(new SendRunnable(connectionSocket, dataToSend));
-        sendThread.start();
+    public boolean sendString(String s) {
+        if (sendRunnable == null) {
+            sendRunnable = new SendRunnable(connectionSocket);
+            sendThread = new Thread(sendRunnable);
+            sendThread.start();
+        }
 
-        return false;
+        if (sendRunnable.HasStringToSend()) {
+            return false;
+        }
+        sendRunnable.StringToSend(s);
+        return true;
     }
 
-    class ConnectRunnable implements Runnable{
-        ConnectRunnable(){
+
+    class ConnectRunnable implements Runnable {
+        ConnectRunnable() {
             //Hier könnte ihre Werbung stehen
         }
+
         @Override
-        public void run(){
+        public void run() {
             try {
                 //Log eintrag.
                 Log.d(TAG, "C: Connecting...");
@@ -86,7 +106,7 @@ public class Client {
                 handlerMainUIThread.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(mainContext,"Connecting",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mainContext, "Connecting", Toast.LENGTH_SHORT).show();
                     }
                 });
                 //IP string to IP object
@@ -107,7 +127,7 @@ public class Client {
                 handlerMainUIThread.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(mainContext,"Verbunden mit "+stringServerIP,Toast.LENGTH_LONG).show();
+                        Toast.makeText(mainContext, "Verbunden mit " + stringServerIP, Toast.LENGTH_LONG).show();
                         textViewConnectionStatus.setText("Verbunden");
                         buttonDisconnect.setEnabled(true);
                         buttonReverse.setEnabled(true);
@@ -115,13 +135,12 @@ public class Client {
                         buttonRight.setEnabled(true);
                     }
                 });
-
             } catch (Exception e) {
                 e.printStackTrace();
                 handlerMainUIThread.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(mainContext,"Fehler beim verbinden",Toast.LENGTH_LONG).show();
+                        Toast.makeText(mainContext, "Fehler beim verbinden", Toast.LENGTH_LONG).show();
                         buttonConnect.setEnabled(true);
                     }
                 });
@@ -131,47 +150,57 @@ public class Client {
         }
     }
 
-    class SendRunnable implements Runnable{
+    class SendRunnable implements Runnable {
 
-        private OutputStream streamOut;
-        private byte[] dataToSend;
-        private boolean hasdata;
+        OutputStream streamOut;
+        private String stringToSend;
+        private boolean hasStringToSend;
 
-        public SendRunnable(Socket server,byte[] dataToSend){
-            Log.d(TAG,"Send Thread spawned" + this);
-            this.dataToSend = dataToSend;
-            this.hasdata = true;
-            try{
-                this.streamOut = server.getOutputStream();
-            }catch (IOException e) {
-                e.printStackTrace();
+        public SendRunnable(Socket server) {
+            Log.d(TAG, "Send Thread spawned" + this);
+            this.hasStringToSend = false;
+            try {
+                streamOut = server.getOutputStream();
+                /*BufferedReader in =
+                        new BufferedReader(
+                                new InputStreamReader(server.getInputStream()));*/
+            } catch (IOException e) {
             }
         }
 
-        public boolean isConnected(){
+        public boolean isConnected() {
             return connectionSocket != null &&
                     connectionSocket.isConnected() &&
                     !connectionSocket.isClosed();
         }
 
+        public boolean HasStringToSend() {
+            return hasStringToSend;
+        }
+
+        public void StringToSend(String StringToSend) {
+
+            this.stringToSend = StringToSend;
+            this.hasStringToSend = true;
+            Log.d(TAG, "Sollte senden,,,," + StringToSend);
+
+
+        }
         @Override
-        public void run(){
-            //TODO DAS FUNST 100 % SO NICHT !!!!!!!
-            if (!Thread.currentThread().isInterrupted() && isConnected() && this.hasdata) {
-                try{
-                    this.streamOut.write(ByteBuffer.allocate(4).putInt(dataToSend.length).array());
-                    this.streamOut.write(dataToSend,0, dataToSend.length);
-                    this.streamOut.flush();
+        public void run() {
+            while (!Thread.currentThread().isInterrupted() && isConnected()) {
+                if (this.hasStringToSend) {
+                    try {
+                        streamOut.write(this.stringToSend.getBytes("UTF-8"));
+                        this.hasStringToSend = false;
+                    }catch (UnsupportedEncodingException e){
+                        e.printStackTrace();
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
 
-                }catch (IOException e){
-                    e.printStackTrace();
                 }
-                this.hasdata = false;
-                this.dataToSend = null;
-
             }
-            sendThread.interrupt();
-
         }
     }
 }

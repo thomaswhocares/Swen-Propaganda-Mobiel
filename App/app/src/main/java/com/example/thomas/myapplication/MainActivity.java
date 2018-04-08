@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.net.wifi.WifiManager;
 import android.content.Context;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         editTextIpAddress = findViewById(R.id.textEditServerIP);
         editTextPort = findViewById(R.id.textEditServerPort);
-        buttonConnect =  findViewById(R.id.buttonServerConnect);
+        buttonConnect = findViewById(R.id.buttonServerConnect);
         buttonDisconnect = findViewById(R.id.buttonServerDisconnect);
         textViewConnectionStatus = findViewById(R.id.textViewConnectionStatus);
         buttonControlLeft = findViewById(R.id.buttonControlLeft);
@@ -57,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
                 serverPort = Integer.parseInt(editTextPort.getText().toString());
 
                 //Instanzieren der Client Klasse
-                client = new Client(getApplicationContext(),handeler,buttonConnect,buttonDisconnect,buttonControlReverse,buttonControlLeft,buttonControlRight,textViewConnectionStatus);
-                client.connectTo(serverIP,serverPort);
+                client = new Client(getApplicationContext(), handeler, buttonConnect, buttonDisconnect, buttonControlReverse, buttonControlLeft, buttonControlRight, textViewConnectionStatus);
+                client.connectTo(serverIP, serverPort);
 
             }
         });
@@ -69,17 +70,57 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        buttonControlReverse.setOnClickListener(new View.OnClickListener() {
+        buttonControlReverse.setOnTouchListener(new View.OnTouchListener() {
+
             @Override
-            public void onClick(View v) {
-                byte[] msg = new byte[1] ;
-                msg[0] = 1;
-                client.send(msg);
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    String command = "R down";
+                    client.sendString(command);
+                }
+                if(event.getAction() == MotionEvent.ACTION_UP){
+                    String command = "R up";
+                    client.sendString(command);
+                }
+                return true;
             }
+
         });
+
+        buttonControlLeft.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    String command = "L down";
+                    client.sendString(command);
+                }
+                if(event.getAction() == MotionEvent.ACTION_UP){
+                    String command = "L up";
+                    client.sendString(command);
+                }
+                return true;
+            }
+
+        });
+        buttonControlRight.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    String command = "R down";
+                    client.sendString(command);
+                }
+                if(event.getAction() == MotionEvent.ACTION_UP){
+                    String command = "R up";
+                    client.sendString(command);
+                }
+                return true;
+            }
+
+        });
+
     }
-
-
     public String localIpAddress() {
         WifiManager wifiMan = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInf = wifiMan.getConnectionInfo();
