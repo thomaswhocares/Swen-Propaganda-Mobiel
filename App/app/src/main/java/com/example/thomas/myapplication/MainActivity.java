@@ -75,11 +75,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    String command = "R down";
+                    String command = "Rev down";
                     client.sendString(command);
                 }
                 if(event.getAction() == MotionEvent.ACTION_UP){
-                    String command = "R up";
+                    String command = "Rev up";
                     client.sendString(command);
                 }
                 return true;
