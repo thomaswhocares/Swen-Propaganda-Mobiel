@@ -1,11 +1,7 @@
 package com.example.thomas.myapplication;
 
-import android.animation.TimeInterpolator;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.net.wifi.WifiInfo;
 import android.os.Handler;
-import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.net.wifi.WifiManager;
@@ -13,7 +9,6 @@ import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
