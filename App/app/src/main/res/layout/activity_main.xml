@@ -14,39 +14,18 @@
         android:layout_marginTop="8dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
+        android:clipChildren="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/buttonControlRightForwards"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:text="Rechts" />
-
-            <Button
-                android:id="@+id/buttonControlRightBackwards"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:text="Rückwärts" />
-        </LinearLayout>
-
-        <Space
-            android:layout_width="15dp"
-            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:clipChildren="false">
 
             <Button
                 android:id="@+id/buttonControlLeftForwards"
@@ -62,6 +41,29 @@
                 android:enabled="false"
                 android:text="Rückwärts" />
         </LinearLayout>
+            <Space
+                android:layout_width="15dp"
+                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:clipChildren="false">
+
+                <Button
+                    android:id="@+id/buttonControlRightForwards"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:text="Rechts" />
+
+                <Button
+                    android:id="@+id/buttonControlRightBackwards"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:text="Rückwärts" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -73,7 +75,8 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        android:clipChildren="false">
         <Button
             android:id="@+id/buttonServerConnect"
             android:layout_width="wrap_content"
@@ -83,6 +86,7 @@
             android:layout_width="10dp"
             android:layout_height="wrap_content" />
         <Button
+            android:enabled="false"
             android:id="@+id/buttonServerDisconnect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -98,19 +102,20 @@ Trennen" />
         android:layout_marginStart="8dp"
         android:layout_marginTop="36dp"
         android:orientation="vertical"
+        android:clipChildren="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-        <TextView
-            android:id="@+id/textEditLocalIP"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="LocalIP"/>
         <TextView
             android:id="@+id/textViewLocalIP"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Local IP"/>
+        <TextView
+            android:id="@+id/textEditLocalIP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LocalIP"/>
     </LinearLayout>
 
     <LinearLayout
@@ -119,6 +124,7 @@ Trennen" />
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
         android:gravity="center"
+        android:clipChildren="false"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -139,6 +145,7 @@ Trennen" />
             android:layout_marginStart="8dp"
             android:layout_marginTop="28dp"
             android:orientation="horizontal"
+            android:clipChildren="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
@@ -147,6 +154,7 @@ Trennen" />
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                android:clipChildren="false"
 
                 <TextView
                     android:id="@+id/textViewServerIP"
@@ -172,6 +180,7 @@ Trennen" />
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                android:clipChildren="false"
 
                 <TextView
                     android:id="@+id/textViewServerPort"
@@ -181,7 +190,7 @@ Trennen" />
 
                 <EditText
                     android:id="@+id/textEditServerPort"
-                    android:layout_width="67dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:digits="0123456789"
                     android:ems="3"

@@ -10,7 +10,6 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import android.os.Handler;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,28 +18,23 @@ import static android.content.ContentValues.TAG;
 
 public class Client {
 
+    private MainActivity mainActivity;
     private Socket connectionSocket;
     private String stringServerIP;
     private int serverPort, timeout = 3000;
     private Handler handlerMainUIThread;
-    private Button buttonConnect, buttonDisconnect, buttonReverse, buttonLeft, buttonRight;
     private TextView textViewConnectionStatus;
     private Context mainContext;
-
     private ConnectRunnable connectRunnable;
     private Thread connectionThread;
     private SendRunnable sendRunnable;
     private Thread sendThread;
 
 
-    public Client(Context mainContext, Handler handlerMainUIThread, Button buttonConnect, Button buttonDisconnect, Button buttonReverse, Button buttonLeft, Button buttonRight, TextView textViewConnectionStatus) {
+    public Client(MainActivity mainActivity,Context mainContext, Handler handlerMainUIThread, TextView textViewConnectionStatus) {
+        this.mainActivity = mainActivity;
         this.mainContext = mainContext;
         this.handlerMainUIThread = handlerMainUIThread;
-        this.buttonConnect = buttonConnect;
-        this.buttonDisconnect = buttonDisconnect;
-        this.buttonReverse = buttonReverse;
-        this.buttonLeft = buttonLeft;
-        this.buttonRight = buttonRight;
         this.textViewConnectionStatus = textViewConnectionStatus;
     }
 
@@ -60,11 +54,7 @@ public class Client {
                 @Override
                 public void run() {
                     Toast.makeText(mainContext, "Trenne Verbindung " + stringServerIP, Toast.LENGTH_SHORT).show();
-                    buttonConnect.setEnabled(true);
-                    buttonDisconnect.setEnabled(false);
-                    buttonReverse.setEnabled(false);
-                    buttonLeft.setEnabled(false);
-                    buttonRight.setEnabled(false);
+                    mainActivity.setButtons(false);
                 }
             });
         } catch (IOException e) {
@@ -125,10 +115,7 @@ public class Client {
                     public void run() {
                         Toast.makeText(mainContext, "Verbunden mit " + stringServerIP, Toast.LENGTH_LONG).show();
                         textViewConnectionStatus.setText("Verbunden");
-                        buttonDisconnect.setEnabled(true);
-                        buttonReverse.setEnabled(true);
-                        buttonLeft.setEnabled(true);
-                        buttonRight.setEnabled(true);
+                        mainActivity.setButtons(true);
                     }
                 });
             } catch (Exception e) {
@@ -137,7 +124,7 @@ public class Client {
                     @Override
                     public void run() {
                         Toast.makeText(mainContext, "Fehler beim verbinden", Toast.LENGTH_LONG).show();
-                        buttonConnect.setEnabled(true);
+                        mainActivity.setButtons(false);
                     }
                 });
 
