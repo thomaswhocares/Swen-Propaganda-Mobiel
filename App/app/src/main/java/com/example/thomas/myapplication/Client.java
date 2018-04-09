@@ -5,14 +5,10 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.StreamCorruptedException;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
-
 import android.os.Handler;
 import android.widget.Button;
 import android.widget.TextView;
