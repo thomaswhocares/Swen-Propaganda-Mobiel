@@ -11,50 +11,50 @@ import time
 # t = time for sleep
 def move_forwards(t):
 
-        p1.ChangeDutyCycle(4)
+        wheel_right.ChangeDutyCycle(4)
         print("forwards")
 
-        p2.ChangeDutyCycle(8)
+        wheelLeft.ChangeDutyCycle(8)
         time.sleep(t)
 
 def move_backwards(t):
         
-        p1.ChangeDutyCycle(8)
+        wheel_right.ChangeDutyCycle(8)
         print("backwards")
 
-        p2.ChangeDutyCycle(4)
+        wheelLeft.ChangeDutyCycle(4)
         time.sleep(t)
 
 def move_forward_left(t):
 
-        p1.ChangeDutyCycle(4)
+        wheel_right.ChangeDutyCycle(4)
         print("left")
 
-        p2.ChangeDutyCycle(6)
+        wheelLeft.ChangeDutyCycle(6)
         time.sleep(t)
 
 def move_forward_right(t):
 
-        p1.ChangeDutyCycle(6)
+        wheel_right.ChangeDutyCycle(6)
         print("right")
 
-        p2.ChangeDutyCycle(8)
+        wheelLeft.ChangeDutyCycle(8)
         time.sleep(t)
 
 def move_backwards_left(t):
         
-        p1.ChangeDutyCycle(8)
+        wheel_right.ChangeDutyCycle(8)
         print("zurück")
 
-        p2.ChangeDutyCycle(6)
+        wheelLeft.ChangeDutyCycle(6)
         time.sleep(t)
 
 def move_backwards_right(t):
         
-        p1.ChangeDutyCycle(6)
+        wheel_right.ChangeDutyCycle(6)
         print("zurück")
 
-        p2.ChangeDutyCycle(4)
+        wheelLeft.ChangeDutyCycle(4)
         time.sleep(t)
 
 
@@ -64,11 +64,11 @@ try:
         GPIO.setup(21,GPIO.OUT)#rechts
         GPIO.setup(19,GPIO.OUT)#links
 
-        p1=GPIO.PWM(21 ,50) #rechts
-        p1.start(100)
+        wheel_right=GPIO.PWM(21 ,50) #rechts
+        wheel_right.start(100)
 
-        p2=GPIO.PWM(19 ,50) #links
-        p2.start(100)
+        wheelLeft=GPIO.PWM(19 ,50) #links
+        wheelLeft.start(100)
         
         while True:
                 move_forward_left(0.5)
