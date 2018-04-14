@@ -1,5 +1,6 @@
 package com.example.thomas.myapplication;
 
+import android.annotation.SuppressLint;
 import android.net.wifi.WifiInfo;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +27,12 @@ public class MainActivity extends AppCompatActivity {
     private int serverPort;
     private Handler handeler;
 
+    private byte bLeftStop = (byte) 0b000, bLeftForwards = (byte) 0b001, bLeftBackwards = 0b010;
+    private byte bRightStop = (byte) 0b100, bRightForwards = (byte) 0b101 , bRightBackwards = 0b110;
 
+
+
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,14 +61,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Verhindert erneutes drücken des "Verbinden" buttons.
 
-                buttonConnect.setEnabled(false);
-                serverIP = editTextIpAddress.getText().toString();
-                serverPort = Integer.parseInt(editTextPort.getText().toString());
+                if(!editTextIpAddress.getText().toString().equals("")&&!editTextPort.getText().toString().equals("")){
+                    buttonConnect.setEnabled(false);
+                    serverIP = editTextIpAddress.getText().toString();
+                    serverPort = Integer.parseInt(editTextPort.getText().toString());
 
-                //Instanzieren der Client Klasse
-                client = new Client(getMainActivity(),getApplicationContext(), handeler,textViewConnectionStatus);
-                client.connectTo(serverIP, serverPort);
-
+                    //Instanzieren der Client Klasse
+                    client = new Client(getMainActivity(),getApplicationContext(), handeler,textViewConnectionStatus);
+                    client.connectTo(serverIP, serverPort);
+                }else{
+                    //todo
+                }
             }
         });
         buttonDisconnect.setOnClickListener(new View.OnClickListener() {
@@ -78,13 +87,12 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
 
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    String command = "LF down"; // Spin left wheel forwards
-                    client.sendString(command);
+                    // Spin left wheel forwards
+                    client.sendByte(bLeftForwards);
                 }
                 if(event.getAction() == MotionEvent.ACTION_UP){
-                    String command = "LF up";  //Stop
-                    client.sendString(command);
-
+                    //Stop
+                    client.sendByte(bLeftStop);
                 }
                 return true;
 
@@ -98,13 +106,13 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 v.animate();
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    String command = "LB down"; // Spin left wheel backwards
-                    client.sendString(command);
+                    // Spin left wheel backwards
+                    client.sendByte(bLeftBackwards);
 
                 }
                 if(event.getAction() == MotionEvent.ACTION_UP){
-                    String command = "LB up";  // stop
-                    client.sendString(command);
+                    //Stop
+                    client.sendByte(bLeftStop);
 
                 }
                 return true;
@@ -117,13 +125,13 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 v.animate();
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    String command = "RF down"; // Spin right wheel backwards
-                    client.sendString(command);
+                    // Spin right wheel backwards
+                    client.sendByte(bRightForwards);
 
                 }
                 if(event.getAction() == MotionEvent.ACTION_UP){
-                    String command = "RF up"; //Stop
-                    client.sendString(command);
+                    //Stop
+                    client.sendByte(bRightStop);
 
                 }
                 return true;
@@ -135,14 +143,12 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 v.animate();
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    String command = "RB down"; // Spin right wheel backwards
-                    client.sendString(command);
-
+                    // Spin right wheel backwards
+                    client.sendByte(bRightBackwards);
                 }
                 if(event.getAction() == MotionEvent.ACTION_UP){
-                    String command = "RB up"; //Stop
-                    client.sendString(command);
-
+                    //Stop
+                    client.sendByte(bRightStop);
                 }
                 return true;
             }
@@ -150,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public String localIpAddress() {
-        WifiManager wifiMan = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifiMan = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInf = wifiMan.getConnectionInfo();
         int ipAddress = wifiInf.getIpAddress();
         //copy pasta von stack overflow
@@ -168,7 +174,6 @@ public class MainActivity extends AppCompatActivity {
         buttonControlLeftForwards.setEnabled(bool);
         buttonControlRightBackwards.setEnabled(bool);
         buttonControlRightForwards.setEnabled(bool);
-
     }
 
 

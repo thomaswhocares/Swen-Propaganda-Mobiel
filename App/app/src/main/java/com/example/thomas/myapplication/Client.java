@@ -38,6 +38,7 @@ public class Client {
         this.textViewConnectionStatus = textViewConnectionStatus;
     }
 
+    //Instanziert die Connect Runnable und die Send Runnable
     public void connectTo(String stringServerIP, int serverPort) {
         this.stringServerIP = stringServerIP;
         this.serverPort = serverPort;
@@ -63,17 +64,12 @@ public class Client {
 
     }
 
-    public boolean sendString(String s) {
-        if (sendRunnable == null) {
-            sendRunnable = new SendRunnable(connectionSocket);
-            sendThread = new Thread(sendRunnable);
-            sendThread.start();
-        }
+    public boolean sendByte(byte byteToSend) {
 
-        if (sendRunnable.HasStringToSend()) {
+        if (sendRunnable.HasByteToSend()) {
             return false;
         }
-        sendRunnable.StringToSend(s);
+        sendRunnable.SetByteToSend(byteToSend);
         return true;
     }
 
@@ -118,6 +114,11 @@ public class Client {
                         mainActivity.setButtons(true);
                     }
                 });
+
+                sendRunnable = new SendRunnable(connectionSocket);
+                sendThread = new Thread(sendRunnable);
+                sendThread.start();
+
             } catch (Exception e) {
                 e.printStackTrace();
                 handlerMainUIThread.post(new Runnable() {
@@ -136,17 +137,14 @@ public class Client {
     class SendRunnable implements Runnable {
 
         OutputStream streamOut;
-        private String stringToSend;
-        private boolean hasStringToSend;
+        private byte byteToSend;
+        private boolean hasByteToSend;
 
         public SendRunnable(Socket server) {
             Log.d(TAG, "Send Thread spawned" + this);
-            this.hasStringToSend = false;
+            this.hasByteToSend = false;
             try {
                 streamOut = server.getOutputStream();
-                /*BufferedReader in =
-                        new BufferedReader(
-                                new InputStreamReader(server.getInputStream()));*/
             } catch (IOException e) {
             }
         }
@@ -157,25 +155,25 @@ public class Client {
                     !connectionSocket.isClosed();
         }
 
-        public boolean HasStringToSend() {
-            return hasStringToSend;
+        public boolean HasByteToSend() {
+            return hasByteToSend;
         }
 
-        public void StringToSend(String StringToSend) {
+        public void SetByteToSend(Byte byteToSend) {
 
-            this.stringToSend = StringToSend;
-            this.hasStringToSend = true;
-            Log.d(TAG, "Sollte senden,,,," + StringToSend);
+            this.byteToSend = byteToSend;
+            this.hasByteToSend = true;
+            Log.d(TAG, "Sollte senden,,,," + byteToSend);
 
 
         }
         @Override
         public void run() {
             while (!Thread.currentThread().isInterrupted() && isConnected()) {
-                if (this.hasStringToSend) {
+                if (this.hasByteToSend) {
                     try {
-                        streamOut.write(this.stringToSend.getBytes("UTF-8"));
-                        this.hasStringToSend = false;
+                        streamOut.write(byteToSend);
+                        this.hasByteToSend = false;
                     }catch (UnsupportedEncodingException e){
                         e.printStackTrace();
                     }catch (IOException e){
