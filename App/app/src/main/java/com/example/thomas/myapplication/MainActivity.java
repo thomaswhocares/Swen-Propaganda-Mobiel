@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private Client client;
     private String serverIP;
     private int serverPort;
-    private Handler handeler;
+    private Handler handler;
 
     private byte bLeftStop = (byte) 0b000, bLeftForwards = (byte) 0b001, bLeftBackwards = 0b010;
     private byte bRightStop = (byte) 0b100, bRightForwards = (byte) 0b101 , bRightBackwards = 0b110;
@@ -51,10 +51,10 @@ public class MainActivity extends AppCompatActivity {
         buttonControlLeftBackwards = findViewById(R.id.buttonControlLeftBackwards);
         buttonControlRightForwards = findViewById(R.id.buttonControlRightForwards);
         buttonControlRightBackwards = findViewById(R.id.buttonControlRightBackwards);
-        editTextIpAddress.setText("192.168.2.171");
+        editTextIpAddress.setText("192.168.1.1");
 
         //Müsste sich mit dem Looper des UI threads verbinden.
-        handeler = new Handler();
+        handler = new Handler();
         //
         buttonConnect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                     serverPort = Integer.parseInt(editTextPort.getText().toString());
 
                     //Instanzieren der Client Klasse
-                    client = new Client(getMainActivity(),getApplicationContext(), handeler,textViewConnectionStatus);
+                    client = new Client(getMainActivity(),getApplicationContext(), handler,textViewConnectionStatus);
                     client.connectTo(serverIP, serverPort);
                 }else{
                     //todo
