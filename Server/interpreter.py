@@ -14,10 +14,10 @@ class Interpreter:
 
         wheel_left=GPIO.PWM(19 ,50) #links
         wheel_left.start(100)
-        print("tets")
+        print("GPIO Ready")
         
     def __end__(self):
-        print("cleaning")
+        print("GPIO closed")
         GPIO.cleanup()
 
     def execute_wheel_command(self,byte_command):

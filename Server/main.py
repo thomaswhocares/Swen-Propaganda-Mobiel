@@ -1,15 +1,19 @@
 import interpreter
+import server
+import time
 
 turner = interpreter.Interpreter()
+srv = server.Server(turner)
 
 try:
-    
-    turner.execute_wheel_command(int('101', 2))
     while True:
-        print("kek")
+        time.sleep(4)
 
 except KeyboardInterrupt:
+    print("Stopping everything")
     turner.__end__()
+    srv.__end__()
+    
 
 
 
