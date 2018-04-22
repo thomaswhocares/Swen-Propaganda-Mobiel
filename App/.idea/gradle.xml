@@ -7,8 +7,8 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="/run/media/thomas/Daten/ITA61/Swen/Propaganda-Mobiel/App" />
-            <option value="/run/media/thomas/Daten/ITA61/Swen/Propaganda-Mobiel/App/app" />
+            <option value="$USER_HOME$/ITA61/ITA Dokumente/2017.08.26 Zweites Jahr/Swen/Swen-Propaganda-Mobil/App" />
+            <option value="$USER_HOME$/ITA61/ITA Dokumente/2017.08.26 Zweites Jahr/Swen/Swen-Propaganda-Mobil/App/app" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
