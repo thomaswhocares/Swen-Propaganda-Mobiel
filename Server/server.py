@@ -17,17 +17,15 @@ class Server:
         
     class Connection_lisener_thread(Thread):
         def __init__(self,interpreter):
-            global keep_listening,server_socket
-            keep_listening = True
+            self.keep_listening = True
             self.connected_instances=0
             self.interpreter = interpreter
 
             try:
-                
-                print("Warte auf erste verbindung")
-                server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                server_socket.bind((server_host, server_port))
-                server_socket.listen(10)
+                self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                self.server_socket.bind((server_host, server_port))
+                self.server_socket.listen(10)
+                print("Socket erstellt")
                 Thread.__init__(self)
                 
             except:
@@ -35,15 +33,20 @@ class Server:
                 self.interpreter.__end__
         
         def __end__(self):
-            global keep_listening
-            keep_listening = False
-            server_socket.close()
+            print("Beende Sockets")
+            self.keep_listening = False
+            self.server_socket.shutdown(2)
+            self.server_socket.close()
                     
         def run(self):
             self.commandThreads = []
-            while keep_listening:
+            while self.keep_listening:
                 print("warte auf verbindung")
-                (self.clientsocket, self.address) = server_socket.accept()
+                try:
+                    (self.clientsocket, self.address) = self.server_socket.accept()
+                except:
+                    print("Connection lissener down.")
+                    break
                 class Connection_recive_command_thread(Thread):
                     def __init__(self,interpreter,clientsocket,address):
                         self.client_connected = True
