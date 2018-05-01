@@ -72,7 +72,7 @@ class Server:
                 
                 self.commandThreads.append(Connection_recive_command_thread(self.interpreter,self.clientsocket,self.address))
                 self.commandThreads[len(self.commandThreads)-1].start()
-                print("client nummer "+str(self.connected_instances)+" verbunden. platz nummer "+str(len(self.commandThreads)))
+                print("client nummer "+str(self.connected_instances)+" verbunden. Platz nummer "+str(len(self.commandThreads)))
                 self.connected_instances=self.connected_instances+1
                 
 
