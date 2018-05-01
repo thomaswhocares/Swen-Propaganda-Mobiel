@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
-
 public class MainActivity extends AppCompatActivity {
 
     private TextView textViewConnectionStatus;
@@ -29,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
 
     private byte bLeftStop = (byte) 0b000, bLeftForwards = (byte) 0b001, bLeftBackwards = 0b010;
     private byte bRightStop = (byte) 0b100, bRightForwards = (byte) 0b101 , bRightBackwards = 0b110;
-
-
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -82,10 +79,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         buttonControlLeftForwards.setOnTouchListener(new View.OnTouchListener() {
-
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
                     // Spin left wheel forwards
                     client.sendByte(bLeftForwards);
@@ -95,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
                     client.sendByte(bLeftStop);
                 }
                 return true;
-
             }
 
 
